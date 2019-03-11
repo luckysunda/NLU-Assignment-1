@@ -266,51 +266,24 @@ settings = {}
 settings['n'] = 300                   # dimension of word embeddings
 settings['window_size'] = 2         # context window +/- center word
 settings['min_count'] = 0           # minimum word count
-settings['epochs'] = 2000           # number of training epochs
-settings['neg_samp'] = 10           # number of negative words to use during training
+settings['epochs'] = 30           # number of training epochs
+settings['neg_samp'] = 5           # number of negative words to use during training
 settings['learning_rate'] = 0.01    # learning rate
 np.random.seed(0)                   # set the seed for reproducibility
 
-
-# INITIALIZE W2V MODEL
 w2v = word2vec()
-
-
-# In[11]:
-
-
-word='week'
-w2v.word_sim(word,10)
-
-
-# In[159]:
 
 
 total_train_words
 
-
-# In[7]:
-
-
-
 training_data = w2v.generate_training_data(settings, train_corpus[:4000])
 
-
-# In[10]:
-
-
 w2v.train(training_data)
-
-
-# In[12]:
-
 
 #--------------------------code for calculationg cosine similarity-----------------------------#
 from scipy import spatial
 sim=spatial.distance.cosine
 
-
-# In[13]:
 
 
 #--------------------------getting all words in training corpus in a list-----------------------------#
@@ -324,7 +297,7 @@ for i in range(0,50):
 
 #--------------------------extracting words from simlex-999 file -----------------------------#
 words=[]
-with open ("SimLex-999/SimLex-999.txt","r") as f:
+with open ("SimLex-999.txt","r") as f:
     for line in f:
         words.append([line.split()[0],line.split()[1],line.split()[3]])    
 
@@ -425,8 +398,11 @@ for row in train_corpus[:20]:
 
 embeddings.keys()
 
+#--------------------------bonus task experiments-----------------------------#
 
-# In[262]:
+word='week'
+w2v.word_sim(word,10)
+
 
 
 #--------------------------error is coming, dont look into it noe-----------------------------#
@@ -501,10 +477,6 @@ for idx in range(viz_words):
 # In[70]:
 
 
-import time
-import tensorflow as tf
-import numpy as np
-import pickle
 
 
 # In[138]:
@@ -526,7 +498,7 @@ for line in questions_words:
     else:
         avl_questions.append(ids)
 print("Questions Skipped:{}".format(not_avl_questions))
-print("Number of analogy questions:{}".format(len(avl_questions)))
+print("Questions available:{}".format(len(avl_questions)))
 questions_words.close()
 avl_questions = np.array(questions, dtype=np.int32)
 
